@@ -1,90 +1,268 @@
-
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>bogong</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Player - Ad Integrated</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #020617;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            color: white;
+            overflow: hidden;
+        }
 
-<style>
-*{box-sizing:border-box}
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            background: #000;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-body{
-    margin:0;
-    background:#0a0a0a;
-    color:#e5e7eb;
-    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
+        video {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
 
-/* CENTER WRAPPER */
-.wrapper{
-    width:100%;
-    max-width:960px;
-    padding:14px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:14px;
-}
+        /* Iklan Overlay */
+        #adOverlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 100;
+            display: none; /* Sembunyi secara default */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
 
-/* PLAYER */
-.player-box{
-    width:100%;
-    background:#000;
-    border-radius:6px;
-    overflow:hidden;
-}
+        .ad-timer-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #3b82f6;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 99px;
+            font-size: 14px;
+            font-weight: 700;
+            z-index: 101;
+        }
 
-video{
-    width:100%;
-    display:block;
-    background:#000;
-}
+        .ad-content {
+            width: 100%;
+            max-width: 320px; /* Ukuran standar iklan banner */
+            min-height: 250px;
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
 
-/* NOTICE */
-.notice{
-    font-size:12px;
-    color:#9ca3af;
-    text-align:center;
-}
+        /* Controls UI */
+        .controls-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            padding: 24px;
+            opacity: 0;
+            transition: all 0.4s;
+            z-index: 20;
+        }
 
-/* BANNER */
-.banner-ad{
-    max-width:100%;
-    overflow:hidden;
-    display:flex;
-    justify-content:center;
-}
-</style>
+        .video-container:hover .controls-overlay { opacity: 1; }
+
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .progress-filled {
+            height: 100%;
+            background: #3b82f6;
+            width: 0%;
+            border-radius: 10px;
+        }
+
+        .control-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="wrapper">
+    <div class="video-container" id="videoContainer">
+        
+        <!-- IKLAN OVERLAY -->
+        <div id="adOverlay">
+            <div class="ad-timer-badge">ads: <span id="adCountdown">10</span>s</div>
+            <div class="text-center mb-6">
+                <h3 class="text-xl font-bold mb-1"></h3>
+                <p class="text-gray-400 text-sm"></p>
+            </div>
+            
+            <!-- Elemen Iklan dari Anda -->
+            <div class="ad-content">
+                <div id="container-79f2e50e72d7af0aa6084fb80b545b98"></div>
+                <script async="async" data-cfasync="false" src="https://brilliantconcealed.com/79f2e50e72d7af0aa6084fb80b545b98/invoke.js"></script>
+            </div>
+        </div>
 
-    <!-- VIDEO PLAYER (CENTER) -->
-    <div class="player-box">
-        <video controls playsinline preload="metadata">
-            <source src="https://cdn.videy.co/yeeCb4bQ1.mp4" type="video/mp4">
-        </video>
+        <video id="mainVideo" 
+               src="https://cdn.videy.co/bBwSzUrA1.mp4" 
+               autoplay 
+               muted 
+               loop 
+               playsinline></video>
+        
+        <!-- Controls -->
+        <div class="controls-overlay">
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-filled" id="progressBar"></div>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <button class="control-btn" id="playPauseBtn">
+                        <i data-lucide="pause" id="playIcon"></i>
+                    </button>
+                    <div class="text-sm font-medium opacity-80 tabular-nums">
+                        <span id="currentTime">00:00</span> / <span id="duration">00:00</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button class="control-btn" id="muteBtn">
+                        <i data-lucide="volume-x" id="volumeIcon"></i>
+                    </button>
+                    <button class="control-btn" id="fullscreenBtn">
+                        <i data-lucide="maximize" size="18"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="notice">
-        ※ 周囲の環境にご注意の上、ご視聴ください。
-    </div>
+    <script>
+        lucide.createIcons();
 
-    <!-- ADSTERRA BANNER 728x90 (SCRIPT ASLI, TIDAK DIUBAH) -->
-    <div class="banner-ad">
-    <script src="https://brilliantconcealed.com/51/bd/cc/51bdcc3e582056548b2c6b16bb0af41f.js"></script>
-    </div>
+        const video = document.getElementById('mainVideo');
+        const adOverlay = document.getElementById('adOverlay');
+        const adCountdown = document.getElementById('adCountdown');
+        const progressBar = document.getElementById('progressBar');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
+        
+        let adShown = false; // Flag agar iklan hanya muncul sekali
 
-</div>
-  
-  
+        video.addEventListener('timeupdate', () => {
+            // Update UI Progress
+            const percent = (video.currentTime / video.duration) * 100;
+            progressBar.style.width = `${percent}%`;
+            currentTimeEl.textContent = formatTime(video.currentTime);
+
+            // LOGIKA IKLAN: Detik ke-20
+            if (video.currentTime >= 20 && !adShown) {
+                showAd();
+            }
+        });
+
+        function showAd() {
+            adShown = true;
+            video.pause();
+            adOverlay.style.display = 'flex';
+            
+            let timeLeft = 10;
+            adCountdown.textContent = timeLeft;
+
+            const timer = setInterval(() => {
+                timeLeft--;
+                adCountdown.textContent = timeLeft;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    closeAd();
+                }
+            }, 1000);
+        }
+
+        function closeAd() {
+            adOverlay.style.display = 'none';
+            video.play();
+        }
+
+        function formatTime(time) {
+            const m = Math.floor(time / 60);
+            const s = Math.floor(time % 60);
+            return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+
+        video.addEventListener('loadedmetadata', () => {
+            durationEl.textContent = formatTime(video.duration);
+        });
+
+        // Basic Controls
+        document.getElementById('playPauseBtn').addEventListener('click', () => {
+            if (video.paused) { video.play(); updateIcon('pause'); }
+            else { video.pause(); updateIcon('play'); }
+        });
+
+        document.getElementById('muteBtn').addEventListener('click', () => {
+            video.muted = !video.muted;
+            updateIconMute(video.muted ? 'volume-x' : 'volume-2');
+        });
+
+        function updateIcon(name) {
+            const icon = document.getElementById('playIcon');
+            icon.setAttribute('data-lucide', name);
+            lucide.createIcons();
+        }
+
+        function updateIconMute(name) {
+            const icon = document.getElementById('volumeIcon');
+            icon.setAttribute('data-lucide', name);
+            lucide.createIcons();
+        }
+
+        document.getElementById('fullscreenBtn').addEventListener('click', () => {
+            if (!document.fullscreenElement) document.getElementById('videoContainer').requestFullscreen();
+            else document.exitFullscreen();
+        });
+    </script>
+
  <script type="text/javascript">
     var _Hasync = _Hasync || [];
     _Hasync.push(['Histats.start', '1,4996542,4,107,170,20,00010000']);
