@@ -3,159 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uploader File Gofile</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .upload-container {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            text-align: center;
-            width: 350px;
-        }
-        h2 {
-            color: #333;
-            margin-bottom: 20px;
-        }
-        input[type="file"] {
-            display: none;
-        }
-        .file-label {
-            display: block;
-            background-color: #2ecc71;
-            color: white;
-            padding: 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-bottom: 15px;
-            transition: background 0.3s;
-        }
-        .file-label:hover {
-            background-color: #27ae60;
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        button:hover {
-            background-color: #2980b9;
-        }
-        button:disabled {
-            background-color: #bdc3c7;
-            cursor: not-allowed;
-        }
-        #status {
-            margin-top: 15px;
-            font-size: 14px;
-            color: #555;
-            word-break: break-all;
-        }
-        .success-link {
-            color: #2ecc71;
-            font-weight: bold;
-            text-decoration: none;
-        }
-    </style>
+    <title>Gofile - Download Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
+<body class="bg-gray-900 text-gray-100 font-sans antialiased min-height-screen">
 
-<div class="upload-container">
-    <h2>Gofile Uploader</h2>
-    
-    <label for="fileInput" class="file-label" id="labelText">Pilih File</label>
-    <input type="file" id="fileInput">
-    
-    <button id="uploadBtn" onclick="uploadFile()">Unggah ke Gofile</button>
-    
-    <div id="status"></div>
-</div>
+    <nav class="bg-gray-800 border-b border-gray-700 px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+            <i class="fa-solid fa-folder-open text-amber-500 text-2xl"></i>
+            <span class="text-xl font-bold tracking-wide text-white">Go<span class="text-amber-500">file</span></span>
+        </div>
+        <div class="text-sm text-gray-400">
+            Storage ID: <span class="font-mono text-gray-200">srv-94b2</span>
+        </div>
+    </nav>
 
-<script>
-    const fileInput = document.getElementById('fileInput');
-    const labelText = document.getElementById('labelText');
-    const uploadBtn = document.getElementById('uploadBtn');
-    const statusDiv = document.getElementById('status');
+    <main class="max-w-5xl mx-auto px-4 py-8">
+        
+        <div class="bg-gray-800 rounded-xl p-6 mb-6 border border-gray-700 shadow-lg">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <h1 class="text-2xl font-bold text-white mb-1">Daftar File Unduhan</h1>
+                    <p class="text-sm text-gray-400">Folder ID: <span class="font-mono text-amber-400">d7XyZ92L</span> • Total: 3 File</p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="alert('Fitur download semua menyusul')" class="bg-amber-500 hover:bg-amber-600 text-gray-900 font-semibold px-4 py-2 rounded-lg text-sm transition-colors flex items-center gap-2">
+                        <i class="fa-solid fa-download"></i> Download Semua (.zip)
+                    </button>
+                </div>
+            </div>
+        </div>
 
-    // Menampilkan nama file yang dipilih pada label
-    fileInput.addEventListener('change', () => {
-        if (fileInput.files.length > 0) {
-            labelText.innerText = fileInput.files[0].name;
-        } else {
-            labelText.innerText = "Pilih File";
-        }
-    });
+        <div class="bg-gray-800 rounded-xl border border-gray-700 shadow-lg overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-750 border-b border-gray-700 text-gray-400 text-xs uppercase tracking-wider">
+                            <th class="px-6 py-4 font-semibold">Nama File</th>
+                            <th class="px-6 py-4 font-semibold">Ukuran</th>
+                            <th class="px-6 py-4 font-semibold text-right">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-700">
+                        
+                        <tr class="hover:bg-gray-750/50 transition-colors">
+                            <td class="px-6 py-4 flex items-center space-x-3">
+                                <i class="fa-regular fa-file-video text-blue-400 text-xl"></i>
+                                <span class="font-medium text-gray-200 truncate max-w-xs md:max-w-md">Liburan_Bali_2026.mp4</span>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-400 font-mono">1.2 GB</td>
+                            <td class="px-6 py-4 text-right">
+                                <div class="inline-flex space-x-2">
+                                    <button onclick="copyLink('https://gofile.io/d/example1')" class="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-gray-300 hover:text-white transition-colors" title="Salin Tautan">
+                                        <i class="fa-regular fa-copy"></i>
+                                    </button>
+                                    <a href="#" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-sm font-medium transition-colors inline-flex items-center gap-1">
+                                        <i class="fa-solid fa-arrow-down"></i> Download
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
 
-    async function uploadFile() {
-        const file = fileInput.files[0];
-        if (!file) {
-            statusDiv.innerHTML = "<span style='color: red;'>Silakan pilih file terlebih dahulu!</span>";
-            return;
-        }
+                        <tr class="hover:bg-gray-750/50 transition-colors">
+                            <td class="px-6 py-4 flex items-center space-x-3">
+                                <i class="fa-regular fa-file-zipper text-amber-400 text-xl"></i>
+                                <span class="font-medium text-gray-200 truncate max-w-xs md:max-w-md">Project_Web_Design.zip</span>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-400 font-mono">45.8 MB</td>
+                            <td class="px-6 py-4 text-right">
+                                <div class="inline-flex space-x-2">
+                                    <button onclick="copyLink('https://gofile.io/d/example2')" class="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-gray-300 hover:text-white transition-colors" title="Salin Tautan">
+                                        <i class="fa-regular fa-copy"></i>
+                                    </button>
+                                    <a href="#" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-sm font-medium transition-colors inline-flex items-center gap-1">
+                                        <i class="fa-solid fa-arrow-down"></i> Download
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
 
-        // Reset status dan disable tombol saat proses berlangsung
-        statusDiv.innerText = "Mendapatkan server terbaik...";
-        uploadBtn.disabled = true;
+                        <tr class="hover:bg-gray-750/50 transition-colors">
+                            <td class="px-6 py-4 flex items-center space-x-3">
+                                <i class="fa-regular fa-file-image text-purple-400 text-xl"></i>
+                                <span class="font-medium text-gray-200 truncate max-w-xs md:max-w-md">Foto_Profil_HD.png</span>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-gray-400 font-mono">4.2 MB</td>
+                            <td class="px-6 py-4 text-right">
+                                <div class="inline-flex space-x-2">
+                                    <button onclick="copyLink('https://gofile.io/d/example3')" class="p-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-gray-300 hover:text-white transition-colors" title="Salin Tautan">
+                                        <i class="fa-regular fa-copy"></i>
+                                    </button>
+                                    <a href="#" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-sm font-medium transition-colors inline-flex items-center gap-1">
+                                        <i class="fa-solid fa-arrow-down"></i> Download
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
 
-        try {
-            // Langkah 1: Dapatkan server Gofile yang tersedia
-            const serverResponse = await fetch('https://api.gofile.io/contents/getServer');
-            const serverData = await serverResponse.json();
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+    </main>
 
-            if (serverData.status !== 'ok') {
-                throw new Error('Gagal mendapatkan server Gofile.');
-            }
+    <footer class="mt-12 border-t border-gray-800 py-6 text-center text-sm text-gray-500">
+        <p>&copy; 2026 Gofile Clone. Dibuat untuk keperluan template.</p>
+    </footer>
 
-            const serverName = serverData.data.server;
-            statusDiv.innerText = `Mengunggah ke server ${serverName}...`;
-
-            // Langkah 2: Buat Form Data untuk mengirim file
-            const formData = new FormData();
-            formData.append('file', file);
-
-            // Langkah 3: Kirim file ke server yang didapatkan tadi
-            const uploadResponse = await fetch(`https://${serverName}.gofile.io/contents/uploadfile`, {
-                method: 'POST',
-                body: formData
+    <script>
+        function copyLink(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Tautan berhasil disalin ke clipboard!');
+            }).catch(err => {
+                console.error('Gagal menyalin teks: ', err);
             });
-
-            const uploadData = await uploadResponse.json();
-
-            if (uploadData.status === 'ok') {
-                // Berhasil diunggah
-                const downloadPage = uploadData.data.downloadPage;
-                statusDiv.innerHTML = `
-                    <span style="color: green;">✔ Berhasil Diunggah!</span><br><br>
-                    <a href="${downloadPage}" target="_blank" class="success-link">Buka Link Download</a>
-                `;
-            } else {
-                throw new Error('Gagal memproses unggahan dari Gofile.');
-            }
-
-        } catch (error) {
-            console.error(error);
-            statusDiv.innerHTML = `<span style='color: red;'>Terjadi kesalahan: ${error.message}</span>`;
-        } finally {
-            // Aktifkan kembali tombol setelah selesai
-            uploadBtn.disabled = false;
         }
-    }
-</script>
-
+    </script>
 </body>
 </html>
